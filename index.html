@@ -544,6 +544,14 @@
     let currentSlideIndex = 1;
     const totalSlides = 4;
 
+    // Função segura para gerar ID único
+    function gerarIdUnico() {
+      if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 9);
+    }
+
     // --- NAVEGAÇÃO E MÁSCARAS ---
     function updateUI() {
       document.getElementById('currSlide').innerText = `0${currentSlideIndex}`;
@@ -642,7 +650,9 @@
       
       const habilidadesSelecionadas = formData.getAll('habilidades').join(', ');
 
+      // Montando o JSON com as variáveis para o n8n
       const payload = {
+        submission_id: gerarIdUnico(),
         data_hora: new Date().toLocaleString('pt-BR'),
         nome: formData.get('nome'),
         municipio: formData.get('municipio'),
